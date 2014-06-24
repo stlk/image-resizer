@@ -22,9 +22,6 @@
 (parse-car-name "Hupmobile A 1928  USA (1).jpg")
 (parse-car-name "Hupmobile A 1928  USA 001.jpg")
 
-(defn my-ls [d f]
-    (println d " - " (.getName f) " - " (parse-car-name (.getName f))))
-
 
 (defn list-files [d]
   (.listFiles d))
@@ -35,11 +32,10 @@
 
 
 (defn list-images [directory]
-  (doseq [d (list-directories directory)]
-  (let [name (.getName d)]
-      (doseq [f (list-files d)]
-    (my-ls name f)))))
+    (map (fn [d] {:name (.getName d)
+                  :images (sort-by first (map #(parse-car-name (.getName %)) (list-files d)))})
+         (list-directories directory)))
 
 
-(list-images (File. "/home/stlk/Documents/clojure/image-resizer/images"))
+(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images")))
 
