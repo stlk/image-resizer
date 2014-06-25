@@ -1,4 +1,14 @@
-(ns image-resizer.name-parser)
+(ns image-resizer.name-parser
+  (:use image-resizer.collection))
+
+(def cars [{:id "lada 1986"
+           :name "Lada 1986"}
+           {:id "sanita 1984-1990"
+            :name "Škoda 1203 - sanita"}
+           {:id "Octavia policie kombi"
+            :name "Škoda Octavia kombi - policie"}
+           {:id "Škoda Oct policie 5 dv."
+            :name "Škoda Octavia 5 dv. - policie"}])
 
 (defn parse-int [s]
    (Integer. (re-find  #"\d+" s )))
@@ -9,7 +19,7 @@
 
 (defn file-map [path offset id]
   (let [name (apply str (drop-last offset path))]
-    {:name name
+    {:name (find-name name cars)
        :id id
        :original_path path
        :path (str name "_" id ".jpg")}))
@@ -24,3 +34,5 @@
 (parse-car-name "Hupmobile A 1928.jpg")
 (parse-car-name "Hupmobile A 1928  USA (1).jpg")
 (parse-car-name "Hupmobile A 1928  USA 001.jpg")
+(parse-car-name "lada 1986.jpg")
+
