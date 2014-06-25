@@ -1,7 +1,18 @@
 (ns image-resizer.core
   (:use image-resizer.name-parser)
+  (:use image-resizer.resizer)
+  (:use image-resizer.collection)
   (:use selmer.parser)
   (:import java.io.File))
+
+(def directories [{:id "20-30"
+           :name "20. až 30. léta"}
+           {:id "40-50"
+            :name "40. až 50. léta"}
+           {:id "60-70"
+            :name "60. až 70. léta"}
+           {:id "80-soucasnost"
+            :name "80. léta - současnost"}])
 
 
 (defn list-files [d]
@@ -13,17 +24,21 @@
 
 
 (defn list-images [directory]
-    (map (fn [d] {:name (.getName d)
+    (reverse (map (fn [d] {:name  (find-name (.getName d) directories)
+                  :path (.getName d)
                   :images (map (fn [item] {:name (first item)
                                   :files (second item)})
-                               (group-by :name (sort-by first (map #(parse-car-name (.getName %)) (list-files d)))))})
-         (list-directories directory)))
+                               (group-by :name (sort-by first (map #(let [name (parse-car-name (.getName %))]
+                                                                       (resize-image d (:original_path name) (:path name))
+                                                                       name) (list-files d)))))})
+         (list-directories directory))))
 
 
-(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images")))
+(selmer.parser/set-resource-path! "/home/stlk/Documents/clojure/image-resizer/resources/")
 
 
-(selmer.parser/set-resource-path! "/home/stlk/Documents/clojure/image-resizer/images/")
+(spit "/home/stlk/Documents/clojure/image-resizer/images/pronajem-vozu.htm" (render-file "pronajem-vozu.htm"
+             {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src"))}))
 
-(spit "/home/stlk/Documents/clojure/image-resizer/images/newfile.htm" (render-file "pronajem-vozu.htm"
-             {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images"))}))
+
+;(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images")))
