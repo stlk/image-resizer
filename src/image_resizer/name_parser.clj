@@ -1,4 +1,5 @@
 (ns image-resizer.name-parser
+  (:require [slugger.core :refer :all])
   (:use image-resizer.collection))
 
 (def cars [{:id "lada 1986"
@@ -7,7 +8,7 @@
             :name "Škoda 1203 - sanita"}
            {:id "Octavia policie kombi"
             :name "Škoda Octavia kombi - policie"}
-           {:id "Škoda Oct policie 5 dv."
+           {:id "Skoda Oct policie 5 dv."
             :name "Škoda Octavia 5 dv. - policie"}])
 
 (defn parse-int [s]
@@ -18,11 +19,13 @@
   (or (= '\( c) (= '\0 c))))
 
 (defn file-map [path offset id]
-  (let [name (apply str (drop-last offset path))]
-    {:name (find-name name cars)
-       :id id
-       :original_path path
-       :path (str name "_" id ".jpg")}))
+  (let [name (apply str (drop-last offset path))
+        identifier (->slug name)]
+    {:identifier identifier
+     :name (find-name name cars)
+     :id id
+     :original_path path
+     :path (str identifier "_" id ".jpg")}))
 
 (defn parse-car-name [path]
   (let [name-length (count path)]
@@ -35,4 +38,3 @@
 (parse-car-name "Hupmobile A 1928  USA (1).jpg")
 (parse-car-name "Hupmobile A 1928  USA 001.jpg")
 (parse-car-name "lada 1986.jpg")
-

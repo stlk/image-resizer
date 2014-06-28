@@ -26,9 +26,11 @@
 (defn list-images [directory]
     (reverse (map (fn [d] {:name  (find-name (.getName d) directories)
                   :path (.getName d)
-                  :images (map (fn [item] {:name (first item)
-                                  :files (second item)})
-                               (group-by :name (sort-by first (map #(let [name (parse-car-name (.getName %))]
+                  :cars (map (fn [[{car-name :name car-id :identifier} files]]
+                                 {:id car-id
+                                  :name car-name
+                                  :files files})
+                               (group-by #(select-keys % [:name :identifier]) (sort-by first (map #(let [name (parse-car-name (.getName %))]
                                                                        (resize-image d (:original_path name) (:path name))
                                                                        name) (list-files d)))))})
          (list-directories directory))))
@@ -41,4 +43,4 @@
              {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src"))}))
 
 
-;(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images")))
+;(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src")))
