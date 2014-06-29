@@ -41,6 +41,3 @@
 
 (spit "/home/stlk/Documents/clojure/image-resizer/images/pronajem-vozu.htm" (render-file "pronajem-vozu.htm"
              {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src"))}))
-
-
-;(clojure.pprint/pprint (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src")))

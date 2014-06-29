@@ -18,5 +18,3 @@
   (.mkdir (File. gallery-path))
   (save-thumbnail dir orig-path path 1280 "")
   (save-thumbnail dir orig-path path 180 "_"))
-
-;(resize-image "/home/stlk/Documents/clojure/image-resizer/images_src/20-30/" "Hupmobile A 1928  USA.jpg" "Hupmobile A 1928  USA_xxx.jpg")
