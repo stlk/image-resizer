@@ -32,9 +32,3 @@
     (if (has-id? path)
       (file-map path 8 (parse-int (subs path (- name-length 7) (- name-length 4))))
       (file-map path 4 0))))
-
-
-(parse-car-name "Hupmobile A 1928.jpg")
-(parse-car-name "Hupmobile A 1928  USA (1).jpg")
-(parse-car-name "Hupmobile A 1928  USA 001.jpg")
-(parse-car-name "lada 1986.jpg")
