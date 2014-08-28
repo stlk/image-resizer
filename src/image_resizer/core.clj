@@ -21,11 +21,11 @@
 
 
 (defn list-directories [d]
-    (filter #(.isDirectory %) (.listFiles d)))
+  (filter #(.isDirectory %) (.listFiles d)))
 
 
 (defn list-images [directory]
-    (reverse (map (fn [d] {:name  (find-name (.getName d) directories)
+  (reverse (map (fn [d] {:name  (find-name (.getName d) directories)
                   :path (.getName d)
                   :cars (map (fn [[{car-name :name car-id :identifier} files]]
                                  {:id car-id
