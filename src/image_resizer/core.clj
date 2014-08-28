@@ -3,7 +3,8 @@
   (:use image-resizer.resizer)
   (:use image-resizer.collection)
   (:use selmer.parser)
-  (:import java.io.File))
+  (:import java.io.File)
+  (:gen-class))
 
 (def directories [{:id "20-30"
            :name "20. až 30. léta"}
@@ -36,8 +37,7 @@
          (list-directories directory))))
 
 
-(selmer.parser/set-resource-path! "/home/stlk/Documents/clojure/image-resizer/resources/")
-
-
-(spit "/home/stlk/Documents/clojure/image-resizer/images/pronajem-vozu.htm" (render-file "pronajem-vozu.htm"
-             {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src"))}))
+(defn -main []
+  (selmer.parser/set-resource-path! "/home/stlk/Documents/clojure/image-resizer/resources/")
+  (spit "/home/stlk/Documents/clojure/image-resizer/images/pronajem-vozu.htm" (render-file "pronajem-vozu.htm"
+             {:epoch_list (list-images (File. "/home/stlk/Documents/clojure/image-resizer/images_src"))})))
